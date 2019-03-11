@@ -30,7 +30,11 @@ public class EntityLockerImpl<T> implements EntityLocker<T> {
     @Override
     public void unlock(T entityId) {
         validate(entityId);
-        getLockByEntityId(entityId).unlock();
+        Lock lock = locks.get(entityId);
+        if (lock == null || !((ReentrantLock) lock).isHeldByCurrentThread()) {
+            throw new IllegalStateException("Entity should be locked before unlocking in the same thread");
+        }
+        lock.unlock();
     }
 
     private synchronized Lock getLockByEntityId(T entityId) {
