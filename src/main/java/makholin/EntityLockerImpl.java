@@ -1,7 +1,7 @@
 package makholin;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -10,7 +10,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class EntityLockerImpl<T> implements EntityLocker<T> {
 
-    private final Map<T, Lock> locks = new HashMap<>();
+    private final Map<T, Lock> locks = new WeakHashMap<>();
 
     @Override
     public void lock(T entityId) {
